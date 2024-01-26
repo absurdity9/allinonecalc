@@ -2,29 +2,6 @@
 let netMonthlySalary;
 let cashleft;
 const salaryInput = document.getElementById('Salary');
-const cashInChart = document.getElementById('cashInChart');
-const chart = new Chart(cashInChart, { // "Cashin" chart
-  type: 'bar',
-  data: {
-    labels: ['Cash In', 'Cash Out', 'Cash Left'],
-    datasets: [{
-      label: '',
-      data: [],
-      backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0)'],
-      borderColor: ['rgba(75, 192, 192, 1)', 'rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0)'],
-      borderWidth: 1
-    }]
-  },
-  options: {
-    responsive: false,
-    scales: {
-      y: {
-        type: 'linear', // Set the scale type to 'linear'
-        beginAtZero: true,
-      }
-    }
-  }
-});
 const costShelterBillsInput = document.getElementById('cost_sh_bills');
 const costTravelInput = document.getElementById('cost_travel');
 const costGroceriesInput = document.getElementById('cost_groceries');
@@ -44,7 +21,7 @@ const cashFlowChart = new Chart(cashFlowChartCanvas, { // Cashflow chart
     ]
   },
   options: {
-    responsive: false,
+    responsive: true,
     scales: {
       y: {
         type: 'linear', // Set the scale type to 'linear'
@@ -54,26 +31,10 @@ const cashFlowChart = new Chart(cashFlowChartCanvas, { // Cashflow chart
   }
 });
 
-function updateChart(salary) { // Logic to update casinin chart with data
-  netMonthlySalary = calculateNetSalary(salary);
-  chart.data.datasets[0].data = [netMonthlySalary, null, null]; // Set netMonthlySalary value in Cash In column
-  chart.update();
-
-  const salaryAmountDisplay = document.getElementById('salaryAmount'); // Update text with numbers
-  const netMonthlySalaryDisplay = document.getElementById('netMonthlySalaryDisplay');
-  salaryAmountDisplay.textContent = salary.toFixed(2);
-  netMonthlySalaryDisplay.textContent = netMonthlySalary.toFixed(2);
-}
-salaryInput.addEventListener('input', function () { // Update chart after salary value changes
-  const salary = parseFloat(salaryInput.value);
-  if (!isNaN(salary)) {
-    updateChart(salary);
-  }
-});
-
-// Second Chart
+// 1st Chart
 
 function updateCashFlowChart() {  // Logic to update cashflow chart with data
+
     const totalCosts =
       Number(costShelterBillsInput.value) +
       Number(costTravelInput.value) +
@@ -83,19 +44,30 @@ function updateCashFlowChart() {  // Logic to update cashflow chart with data
     cashleft = netMonthlySalary - totalCosts
     cashFlowChart.data.datasets[0].data = [netMonthlySalary, totalCosts, cashleft];
     cashFlowChart.update();
-  
+    inOutRatio = (netMonthlySalary-totalCosts)/netMonthlySalary*100;
+
     document.getElementById('totalCosts').textContent = totalCosts.toFixed(2); // Update text with numbers
     document.getElementById('cashLeftDisplay1').textContent = cashleft.toFixed(2);
     document.getElementById('cashLeftDisplay2').textContent = cashleft.toFixed(2);
+    document.getElementById('in-out-ratio').textContent = inOutRatio.toFixed(2);
   }
+
+salaryInput.addEventListener('input', function () { // Update chart after salary value changes
+    const salary = parseFloat(salaryInput.value);
+    if (!isNaN(salary)) {
+      netMonthlySalary = calculateNetSalary(salary);
+      const salaryAmountDisplay = document.getElementById('salaryAmount'); // Update text with numbers
+      salaryAmountDisplay.textContent = salary;
+      const netMonthlySalaryDisplay = document.getElementById('netMonthlySalaryDisplay');
+      netMonthlySalaryDisplay.textContent = netMonthlySalary.toFixed(2);
+    }
+  });
+  
 costShelterBillsInput.addEventListener('input', updateCashFlowChart); // Update chart after value changes
 costTravelInput.addEventListener('input', updateCashFlowChart);
 costGroceriesInput.addEventListener('input', updateCashFlowChart);
 costOtherInput.addEventListener('input', updateCashFlowChart);
-const initialSalary = parseFloat(salaryInput.value);
-if (!isNaN(initialSalary)) {
-  updateChart(initialSalary);
-}
+
 updateCashFlowChart();
 
 // Third Chart
@@ -144,7 +116,7 @@ const moneyMapChart = new Chart(moneyMapChartElement, { // Moneymap chart
     ]
   },
   options: {
-    responsive: false,
+    responsive: true,
     scales: {
       y: {
         type: 'linear', // Set the scale type to 'linear'
