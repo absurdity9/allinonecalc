@@ -70,11 +70,9 @@ salaryInput.addEventListener("input", function () {
   if (!isNaN(salary)) {
     netMonthlySalary = calculateNetSalary(salary);
     const salaryAmountDisplay = document.getElementById("salaryAmount"); // Update text with numbers
-    salaryAmountDisplay.textContent = salary;
-    const netMonthlySalaryDisplay = document.getElementById(
-      "netMonthlySalaryDisplay"
-    );
-    netMonthlySalaryDisplay.textContent = netMonthlySalary.toFixed(2);
+    salaryAmountDisplay.textContent = salary.toLocaleString();
+    const netMonthlySalaryDisplay = document.getElementById("netMonthlySalaryDisplay");
+    netMonthlySalaryDisplay.textContent = netMonthlySalary.toFixed(2).toLocaleString();
   }
 });
 
@@ -113,12 +111,13 @@ function updateMoneyMapChart() {
     yieldVanguard,
     years
   );
+  const capital_over_time = [];
   let cumulativeSum = 0;
   for (let i = 0; i < capital_amounts.length; i++) {
     cumulativeSum += parseFloat(capital_amounts[i]);
     capital_over_time.push(cumulativeSum.toFixed(2));
   }
-  capitalDisplay.textContent = cumulativeSum;
+  capitalDisplay.textContent = cumulativeSum.toLocaleString();
   moneyMapChart.data.datasets[0].data = capital_over_time;
   moneyMapChart.update();
 }
@@ -130,13 +129,14 @@ yieldVanguardInput.addEventListener("input", updateMoneyMapChart);
 
 const moneyMapChart = new Chart(moneyMapChartElement, {
   // Moneymap chart
-  type: "bar",
+  type: "line",
   data: {
     labels: ["1", "2", "3", "4", "5"],
     datasets: [
       {
         label: "Household Assets",
         data: [],
+        fill: true,
         backgroundColor: "#519294",
         borderWidth: 1,
       },
