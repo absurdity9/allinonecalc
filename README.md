@@ -1,1 +1,1 @@
-readme for onepager calculator
+# allinonecalc readme.md
