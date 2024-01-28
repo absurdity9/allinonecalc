@@ -113,12 +113,13 @@ function updateMoneyMapChart() {
     yieldVanguard,
     years
   );
-  console.log(capital_amounts)
-  const sum = capital_amounts.reduce((accumulator, currentValue) => {
-    return accumulator + parseFloat(currentValue);
-  }, 0);
-  capitalDisplay.textContent = sum;
-  moneyMapChart.data.datasets[0].data = capital_amounts;
+  let cumulativeSum = 0;
+  for (let i = 0; i < capital_amounts.length; i++) {
+    cumulativeSum += parseFloat(capital_amounts[i]);
+    capital_over_time.push(cumulativeSum.toFixed(2));
+  }
+  capitalDisplay.textContent = cumulativeSum;
+  moneyMapChart.data.datasets[0].data = capital_over_time;
   moneyMapChart.update();
 }
 
