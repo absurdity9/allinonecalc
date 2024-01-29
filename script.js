@@ -56,11 +56,12 @@ function updateCashFlowChart() {
     cashleft,
   ];
   cashFlowChart.update();
-  inOutRatio = ((netMonthlySalary - totalCosts) / netMonthlySalary) * 100;
 
   document.getElementById("totalCosts").textContent = totalCosts.toFixed(2); // Update text with numbers
   document.getElementById("cashLeftDisplay1").textContent = cashleft.toFixed(2);
   document.getElementById("cashLeftDisplay2").textContent = cashleft.toFixed(2);
+  
+  inOutRatio = ((netMonthlySalary - totalCosts) / netMonthlySalary) * 100;
   document.getElementById("in-out-ratio").textContent = inOutRatio.toFixed(2);
 }
 
