@@ -72,7 +72,9 @@ salaryInput.addEventListener("input", function () {
     const salaryAmountDisplay = document.getElementById("salaryAmount"); // Update text with numbers
     salaryAmountDisplay.textContent = salary.toLocaleString();
     const netMonthlySalaryDisplay = document.getElementById("netMonthlySalaryDisplay");
-    netMonthlySalaryDisplay.textContent = netMonthlySalary.toFixed(2).toLocaleString();
+    const formattedSalaryString = netMonthlySalary.toFixed(2);
+    const formattedSalary = parseFloat(formattedSalaryString);
+    netMonthlySalaryDisplay.textContent = formattedSalary.toLocaleString();
   }
 });
 
